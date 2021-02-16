@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "763588028647",
+    "project_id": "diagnostico-bovino",
+    "storage_bucket": "diagnostico-bovino.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763588028647:android:6cc24100e9a6b40473da42",
+        "android_client_info": {
+          "package_name": "br.u14bits.aparicio.diagnostico_bovino"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763588028647-i5iqfaks5dnnm4kajuu59k1bs9vh3cii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.u14bits.aparicio.diagnostico_bovino",
+            "certificate_hash": "3addfae8a064844078f450322cf5bd3740913ff1"
+          }
+        },
+        {
+          "client_id": "763588028647-3272jnio1p2cqg0hpcelni3hqbbv6bc9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfy_G8CdPO0ceCaa6-dPHWqFH4BjoOjKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763588028647-3272jnio1p2cqg0hpcelni3hqbbv6bc9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,146 @@
+import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:diagnostico_bovino/view/tela_cadastro_animal.dart';
+import 'package:flutter/material.dart';
+import 'package:lit_firebase_auth/lit_firebase_auth.dart';
+
+class TelaPricipal extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final sizewidth = MediaQuery.of(context).size.width;
+    final sizeheight = (MediaQuery.of(context).size.height -
+        (kToolbarHeight + MediaQuery.of(context).padding.top));
+    final double _imagemWidthSize = sizewidth * 0.5;
+    final double _imagemHeightSize = sizeheight * 0.25;
+    final double _fonteSize = 25;
+    return ScaffoldLayout(
+      body: Column(
+        children: [
+          AcaoTopo(
+              icone: Icons.logout,
+              texto: 'sair',
+              onPressed: () => context.signOut()),
+          Container(
+            child: Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                children: [
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => TelaCadastroAnimal()));
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/animal.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Animal',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                  FlatButton(
+                      onPressed: () {
+                        print("Rebanho...+++");
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/rebanho.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Rebanho',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                  FlatButton(
+                      onPressed: () {
+                        print("Prontuario...+++");
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/prontuario.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Prontuario',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                  FlatButton(
+                      onPressed: () {
+                        print("Manejo...+++");
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/manejo.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Manejo',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                  FlatButton(
+                      onPressed: () {
+                        print("Diagnostico...+++");
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/diagnostico.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Diagnostico',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                  FlatButton(
+                      onPressed: () {
+                        print("Tratamento...+++");
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'imagens/tratamento.png',
+                                  width: _imagemWidthSize,
+                                  height: _imagemHeightSize,
+                                ),
+                                Text('Tratamento',
+                                    style: TextStyle(fontSize: _fonteSize))
+                              ]))),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      // ),
+      // ],
+    );
+  }
+}
