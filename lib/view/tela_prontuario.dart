@@ -1,34 +1,27 @@
-import 'package:diagnostico_bovino/view/tela_pricipal.dart';
+import 'package:diagnostico_bovino/model/animal.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 
 class TelaProntuario extends StatelessWidget {
-  Animal animal;
   @override
   Widget build(BuildContext context) {
-    animal = ModalRoute.of(context).settings.arguments;
+    Animal animal = ModalRoute.of(context).settings.arguments;
     return ScaffoldLayout(
-      body: ListView(
-        children: [
-          SizedBox(height: 30),
-          containerDadosDoAnimal(),
-          SizedBox(height: 30),
-          pesagensRealizadas(),
-          SizedBox(height: 30),
-          tratamentosAplicados()
-        ],
-      ),
-      floatingActionButton: BotaoRodape(
-        child: Text("Fechar"),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => TelaPricipal()));
-        },
-      ),
-    );
+        body: ListView(
+          children: [
+            SizedBox(height: 30),
+            containerDadosDoAnimal(animal),
+            SizedBox(height: 30),
+            pesagensRealizadas(animal),
+            SizedBox(height: 30),
+            tratamentosAplicados(animal)
+          ],
+        ),
+        floatingActionButton: BotaoRodape(
+            child: Text("Fechar"), onPressed: () => Navigator.pop(context)));
   }
 
-  containerDadosDoAnimal() {
+  containerDadosDoAnimal(animal) {
     return Column(
       children: [
         Container(
@@ -64,7 +57,7 @@ class TelaProntuario extends StatelessWidget {
     );
   }
 
-  tratamentosAplicados() {
+  tratamentosAplicados(animal) {
     return Column(
       children: [
         Container(
@@ -89,7 +82,7 @@ class TelaProntuario extends StatelessWidget {
     );
   }
 
-  pesagensRealizadas() {
+  pesagensRealizadas(animal) {
     return Column(
       children: [
         Container(

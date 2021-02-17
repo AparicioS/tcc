@@ -1,10 +1,10 @@
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:diagnostico_bovino/view/rebanho_search_delegate.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_animal.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_rebanho.dart';
 import 'package:diagnostico_bovino/view/tela_prontuario.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 class TelaPricipal extends StatelessWidget {
@@ -16,6 +16,13 @@ class TelaPricipal extends StatelessWidget {
     final double _imagemWidthSize = sizewidth * 0.5;
     final double _imagemHeightSize = sizeheight * 0.25;
     final double _fonteSize = 25;
+
+    abrirProntuario(animal) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => TelaProntuario(),
+          settings: RouteSettings(arguments: animal)));
+    }
+
     return ScaffoldLayout(
       body: Column(
         children: [
@@ -68,9 +75,10 @@ class TelaPricipal extends StatelessWidget {
                               ]))),
                   FlatButton(
                       onPressed: () => showSearch(
-                          context: context,
-                          delegate: CustomSearchDelegate(
-                              hintText: 'numero do brinco')),
+                              context: context,
+                              delegate: RebanhoSearchDelegate())
+                          .then((value) =>
+                              value != null ? abrirProntuario(value) : null),
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -87,8 +95,10 @@ class TelaPricipal extends StatelessWidget {
                               ]))),
                   FlatButton(
                       onPressed: () {
-                        // showSearch(
-                        //     context: context, delegate: CustomSearchDelegate());
+                        showSearch(
+                                context: context,
+                                delegate: RebanhoSearchDelegate())
+                            .then((value) => abrirProntuario(value));
                       },
                       child: Align(
                           alignment: Alignment.bottomCenter,
@@ -106,7 +116,10 @@ class TelaPricipal extends StatelessWidget {
                               ]))),
                   FlatButton(
                       onPressed: () {
-                        print("Diagnostico...+++");
+                        showSearch(
+                                context: context,
+                                delegate: RebanhoSearchDelegate())
+                            .then((value) => abrirProntuario(value));
                       },
                       child: Align(
                           alignment: Alignment.bottomCenter,
@@ -124,7 +137,10 @@ class TelaPricipal extends StatelessWidget {
                               ]))),
                   FlatButton(
                       onPressed: () {
-                        print("Tratamento...+++");
+                        showSearch(
+                                context: context,
+                                delegate: RebanhoSearchDelegate())
+                            .then((value) => abrirProntuario(value));
                       },
                       child: Align(
                           alignment: Alignment.bottomCenter,
@@ -149,109 +165,5 @@ class TelaPricipal extends StatelessWidget {
       // ),
       // ],
     );
-  }
-}
-
-class Animal {
-  const Animal(
-      this.name, this.nBrinco, this.sexo, this.dataNascimento, this.raca);
-
-  final String name;
-  final String nBrinco;
-  final String sexo;
-  final String dataNascimento;
-  final String raca;
-}
-
-class CustomSearchDelegate extends SearchDelegate {
-  CustomSearchDelegate({
-    String hintText,
-  }) : super(
-          searchFieldLabel: hintText,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.search,
-        );
-
-  static const List<Animal> rebanho = [
-    Animal('boi 1', '123456789123', 'macho', '10/10/2020', 'raça'),
-    Animal('boi 2', '165216511651', 'femea', '10/10/2020', 'raça'),
-    Animal('boi 3', '166116511651', 'macho', '10/10/2020', 'raça'),
-    Animal('boi 4', '166116511651', 'femea', '10/10/2020', 'raça'),
-    Animal('boi 5', '175116511651', 'macho', '10/10/2020', 'raça'),
-    Animal('boi 6', '175116511651', 'femea', '10/10/2020', 'raça'),
-    Animal('boi 7', '265116511651', 'macho', '10/10/2020', 'raça'),
-  ];
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () => this.query = '',
-      )
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () => this.close(context, null),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    abrirProntuario(animal) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => TelaProntuario(),
-          settings: RouteSettings(arguments: animal)));
-    }
-
-    return ListView.builder(
-      itemCount: filtrarRebanhoByQuery().length,
-      itemBuilder: (context, index) {
-        Animal animal = filtrarRebanhoByQuery()[index];
-        return ListTile(
-          leading: SizedBox(width: 150, child: Text(animal.nBrinco)),
-          title: Text(animal.name),
-          subtitle: Text(animal.dataNascimento),
-          trailing: Text(animal.sexo),
-          onTap: () {
-            abrirProntuario(animal);
-          },
-        );
-      },
-    );
-  }
-
-  @SemanticsHintOverrides()
-  Widget buildSuggestions(BuildContext context) {
-    abrirProntuario(animal) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => TelaProntuario(),
-          settings: RouteSettings(arguments: animal)));
-    }
-
-    return ListView.builder(
-      itemCount: filtrarRebanhoByQuery().length,
-      itemBuilder: (context, index) {
-        Animal animal = filtrarRebanhoByQuery()[index];
-        return ListTile(
-          title: Text(animal.nBrinco),
-          trailing: Text(animal.name),
-          onTap: () {
-            abrirProntuario(animal);
-          },
-        );
-      },
-    );
-  }
-
-  List<Animal> filtrarRebanhoByQuery() {
-    return rebanho
-        .where((person) =>
-            person.nBrinco.toLowerCase().contains(this.query.toLowerCase()))
-        .toList();
   }
 }
