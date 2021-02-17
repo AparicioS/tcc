@@ -12,7 +12,6 @@ class _TelaDiagnosticoDadosAnimalState
     extends State<TelaDiagnosticoDadosAnimal> {
   @override
   Widget build(BuildContext context) {
-    int selectedValue = 0;
     carregarListaDropDow() {
       final _categorias = [
         'Alberes',

@@ -25,6 +25,7 @@ dependencies:
   # firebase_core : "0.7.0" 
   lit_firebase_auth: ^0.3.0
   datetime_picker_formfield: ^1.0.0
+  loader_search_bar: ^1.0.3+3
 
   flutter:
     sdk: flutter

@@ -1,4 +1,5 @@
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:diagnostico_bovino/view/tela_pricipal.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
@@ -108,7 +109,10 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
       ),
       floatingActionButton: BotaoRodape(
         child: Text("Salvar"),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => TelaPricipal()));
+        },
       ),
     );
   }
