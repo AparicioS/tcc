@@ -3,6 +3,7 @@ import 'package:diagnostico_bovino/view/rebanho_search_delegate.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_animal.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_rebanho.dart';
 import 'package:diagnostico_bovino/view/tela_prontuario.dart';
+import 'package:diagnostico_bovino/view/tela_tratamento.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lit_firebase_auth/lit_firebase_auth.dart';
@@ -20,6 +21,12 @@ class TelaPricipal extends StatelessWidget {
     abrirProntuario(animal) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => TelaProntuario(),
+          settings: RouteSettings(arguments: animal)));
+    }
+
+    abrirTratamento(animal) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => TelaTratamento(),
           settings: RouteSettings(arguments: animal)));
     }
 
@@ -140,7 +147,7 @@ class TelaPricipal extends StatelessWidget {
                         showSearch(
                                 context: context,
                                 delegate: RebanhoSearchDelegate())
-                            .then((value) => abrirProntuario(value));
+                            .then((value) => abrirTratamento(value));
                       },
                       child: Align(
                           alignment: Alignment.bottomCenter,

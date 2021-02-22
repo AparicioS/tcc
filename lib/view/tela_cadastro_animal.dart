@@ -1,5 +1,4 @@
 import 'package:diagnostico_bovino/view/layout.dart';
-import 'package:diagnostico_bovino/view/tela_pricipal.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
@@ -46,13 +45,12 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
             ),
           ),
           TextField(
-            keyboardType: TextInputType.text,
-            obscureText: true,
+            autofocus: true,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: "Numero do brinco:"),
           ),
           SizedBox(height: 30),
           TextField(
-            keyboardType: TextInputType.text,
             obscureText: true,
             decoration: InputDecoration(labelText: "Nome/Identificação:"),
           ),
@@ -89,9 +87,9 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
           Container(
             child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                  labelText: "Sexo:",
-                  contentPadding: EdgeInsets.all(10),
-                  counterStyle: TextStyle(color: Colors.red)),
+                labelText: "Sexo:",
+                contentPadding: EdgeInsets.all(10),
+              ),
               items: [
                 DropdownMenuItem<String>(
                   child: Text('Macho'),
@@ -108,12 +106,7 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
         ],
       ),
       floatingActionButton: BotaoRodape(
-        child: Text("Salvar"),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => TelaPricipal()));
-        },
-      ),
+          child: Text("Salvar"), onPressed: () => Navigator.pop(context)),
     );
   }
 }

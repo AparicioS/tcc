@@ -1,5 +1,4 @@
 import 'package:diagnostico_bovino/view/layout.dart';
-import 'package:diagnostico_bovino/view/tela_pricipal.dart';
 import 'package:flutter/material.dart';
 
 class TelaCadastroRebanho extends StatefulWidget {
@@ -84,12 +83,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
         ],
       ),
       floatingActionButton: BotaoRodape(
-        child: Text("Salvar"),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => TelaPricipal()));
-        },
-      ),
+          child: Text("Salvar"), onPressed: () => Navigator.pop(context)),
     );
   }
 }
