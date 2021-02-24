@@ -15,7 +15,7 @@ class TelaPricipal extends StatelessWidget {
     final sizeheight = (MediaQuery.of(context).size.height -
         (kToolbarHeight + MediaQuery.of(context).padding.top));
     final double _imagemWidthSize = sizewidth * 0.5;
-    final double _imagemHeightSize = sizeheight * 0.25;
+    final double _imagemHeightSize = sizeheight * 0.20;
     final double _fonteSize = 25;
 
     abrirProntuario(animal) {
@@ -101,12 +101,11 @@ class TelaPricipal extends StatelessWidget {
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
                   FlatButton(
-                      onPressed: () {
-                        showSearch(
-                                context: context,
-                                delegate: RebanhoSearchDelegate())
-                            .then((value) => abrirProntuario(value));
-                      },
+                      onPressed: () => showSearch(
+                              context: context,
+                              delegate: RebanhoSearchDelegate())
+                          .then((value) =>
+                              value != null ? abrirProntuario(value) : null),
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -122,12 +121,11 @@ class TelaPricipal extends StatelessWidget {
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
                   FlatButton(
-                      onPressed: () {
-                        showSearch(
-                                context: context,
-                                delegate: RebanhoSearchDelegate())
-                            .then((value) => abrirProntuario(value));
-                      },
+                      onPressed: () => showSearch(
+                              context: context,
+                              delegate: RebanhoSearchDelegate())
+                          .then((value) =>
+                              value != null ? abrirTratamento(value) : null),
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(
@@ -143,12 +141,11 @@ class TelaPricipal extends StatelessWidget {
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
                   FlatButton(
-                      onPressed: () {
-                        showSearch(
-                                context: context,
-                                delegate: RebanhoSearchDelegate())
-                            .then((value) => abrirTratamento(value));
-                      },
+                      onPressed: () => showSearch(
+                              context: context,
+                              delegate: RebanhoSearchDelegate())
+                          .then((value) =>
+                              value != null ? abrirTratamento(value) : null),
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(

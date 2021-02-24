@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/material.dart';
 
@@ -7,17 +8,56 @@ class TelaCadastroRebanho extends StatefulWidget {
 }
 
 class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
-  final _regiao = ['Norte', 'Sul'];
-  final _alimetacao = ['Pastagem', 'Silo'];
-  final _finalidade = ['Cria', 'Recria', 'Engorda'];
-  carregarListaDropDow(List<String> lista) {
-    return lista.map((String item) {
-      debugPrint(item);
-      return DropdownMenuItem<String>(
-        child: Text(item),
-        value: item,
-      );
-    }).toList();
+  List<DropdownMenuItem> listaRegiao;
+  List<DropdownMenuItem> listaAlimentacao;
+  List<DropdownMenuItem> listaFinalidade;
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('regiao')
+        .snapshots()
+        .listen((colecao) {
+      List<DropdownMenuItem> lista = colecao.docs
+          .map((doc) => DropdownMenuItem<String>(
+                child: Text(doc.id),
+                value: doc.id,
+              ))
+          .toList();
+      setState(() {
+        listaRegiao = lista;
+      });
+    });
+    FirebaseFirestore.instance
+        .collection('alimentacao')
+        .snapshots()
+        .listen((colecao) {
+      List<DropdownMenuItem> lista = colecao.docs
+          .map((doc) => DropdownMenuItem<String>(
+                child: Text(doc.id),
+                value: doc.id,
+              ))
+          .toList();
+      setState(() {
+        listaAlimentacao = lista;
+      });
+    });
+    FirebaseFirestore.instance
+        .collection('finalidade')
+        .snapshots()
+        .listen((colecao) {
+      List<DropdownMenuItem> lista = colecao.docs
+          .map((doc) => DropdownMenuItem<String>(
+                child: Text(doc.id),
+                value: doc.id,
+              ))
+          .toList();
+      setState(() {
+        listaFinalidade = lista;
+      });
+    });
+
+    super.initState();
   }
 
   @override
@@ -43,7 +83,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
                   labelText: "Região:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: carregarListaDropDow(_regiao),
+              items: listaRegiao,
               onChanged: (value) => print("selecionado: $value"),
             ),
           ),
@@ -54,7 +94,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
                   labelText: "Alimentação principal:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: carregarListaDropDow(_alimetacao),
+              items: listaAlimentacao,
               onChanged: (value) => print("selecionado: $value"),
             ),
           ),
@@ -65,7 +105,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
                   labelText: "Alimentação complementar:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: carregarListaDropDow(_alimetacao),
+              items: listaAlimentacao,
               onChanged: (value) => print("selecionado: $value"),
             ),
           ),
@@ -76,7 +116,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
                   labelText: "Finalidade:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: carregarListaDropDow(_finalidade),
+              items: listaFinalidade,
               onChanged: (value) => print("selecionado: $value"),
             ),
           ),

@@ -1,3 +1,7 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 class Interval {
   Interval({DateTime data})
       : super(
@@ -67,5 +71,30 @@ class DataUtil {
     idade = idade.isEmpty ? '1dia' : idade;
 
     return idade;
+  }
+
+  ///DateTimeField and showDatePicker
+  ///
+  ///retorna um Widget de data (campo e seletor ) formatado em portugues br
+  static DateTimeField campoData(String label) {
+    return DateTimeField(
+        decoration: InputDecoration(
+          labelText: label,
+        ),
+        format: DateFormat('dd/MM/yyyy'),
+        onSaved: (data) => print(data),
+        onChanged: (data) {
+          print(DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br').format(data));
+        },
+        initialValue: DateTime.now(),
+        keyboardType: TextInputType.datetime,
+        onShowPicker: (context, currentValue) {
+          return showDatePicker(
+              locale: Locale('pt'),
+              context: context,
+              initialDate: currentValue ?? DateTime.now(),
+              firstDate: DateTime.now().subtract(Duration(days: 730)),
+              lastDate: DateTime.now());
+        });
   }
 }

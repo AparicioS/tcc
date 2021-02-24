@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:diagnostico_bovino/view/tela_diagnostico_sintomas.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +11,38 @@ class TelaDiagnosticoDadosAnimal extends StatefulWidget {
 
 class _TelaDiagnosticoDadosAnimalState
     extends State<TelaDiagnosticoDadosAnimal> {
+  List<DropdownMenuItem> listaRaca;
+  List<DropdownMenuItem> listaSexo;
+
+  @override
+  void initState() {
+    setState(() {
+      listaSexo = ['Fêmea', 'Macho']
+          .map((item) => DropdownMenuItem<String>(
+                child: Text(item),
+                value: item.substring(0, 1),
+              ))
+          .toList();
+    });
+    FirebaseFirestore.instance
+        .collection('racas')
+        .snapshots()
+        .listen((colecao) {
+      List<DropdownMenuItem> racas = colecao.docs
+          .map((doc) => DropdownMenuItem<String>(
+                child: Text(doc.id),
+                value: doc.id,
+              ))
+          .toList();
+      setState(() {
+        listaRaca = racas;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    carregarListaDropDow() {
-      final _categorias = [
-        'Alberes',
-        'Angus',
-        'Beefalo',
-        'Guzerá',
-        'Nelore',
-        'Senepol'
-      ];
-      return _categorias.map((String categoria) {
-        debugPrint(categoria);
-        return DropdownMenuItem<String>(
-          child: Text(categoria),
-          value: categoria,
-        );
-      }).toList();
-    }
-
     return ScaffoldLayout(
       body: ListView(
         children: [
@@ -41,7 +54,6 @@ class _TelaDiagnosticoDadosAnimalState
           SizedBox(height: 30),
           TextField(
             keyboardType: TextInputType.text,
-            obscureText: true,
             decoration: InputDecoration(
                 labelText: "Idade:", hintText: 'definier mascara para o campo'),
           ),
@@ -52,14 +64,13 @@ class _TelaDiagnosticoDadosAnimalState
                   labelText: 'Raça:',
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: carregarListaDropDow(),
+              items: listaRaca,
               onChanged: (value) => print('selecionada :\n' + value),
             ),
           ),
           SizedBox(height: 30),
           TextField(
             keyboardType: TextInputType.text,
-            obscureText: true,
             decoration: InputDecoration(labelText: "Peso/Kg:"),
           ),
           SizedBox(height: 30),
@@ -69,16 +80,7 @@ class _TelaDiagnosticoDadosAnimalState
                   labelText: "Sexo:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
-              items: [
-                DropdownMenuItem<String>(
-                  child: Text('Macho'),
-                  value: 'macho',
-                ),
-                DropdownMenuItem<String>(
-                  child: Text('Fêmea'),
-                  value: 'femea',
-                ),
-              ],
+              items: listaSexo,
               onChanged: (value) => print("sexo selecionado: $value"),
             ),
           ),

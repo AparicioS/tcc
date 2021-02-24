@@ -1,4 +1,5 @@
 import 'package:diagnostico_bovino/model/animal.dart';
+import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 
@@ -46,7 +47,7 @@ class TelaProntuario extends StatelessWidget {
               ]),
               TableRow(children: [
                 Text('Idade:'),
-                Text(animal.dataNascimento),
+                Text(DataUtil.idadebyDataNascimento(animal.dataNascimento)),
               ]),
               TableRow(children: [
                 Text('Sexo:'),

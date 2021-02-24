@@ -38,6 +38,7 @@ android {
         applicationId "br.u14bits.aparicio.diagnostico_bovino"
         minSdkVersion 21
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Animal {
   String name;
   String nBrinco;
@@ -6,22 +8,6 @@ class Animal {
   String raca;
 
   Animal(this.name, this.nBrinco, this.sexo, this.dataNascimento, this.raca);
-  // Animal(String nome, String nBrinco, String sexo, DateTime dataNascimento ,
-  //     String raca) {
-  //   this.nome = nome;
-  //   this.nBrinco = nBrinco;
-  //   this.sexo = sexo;
-  //   this.dataNascimento = dataNascimento;
-  //   this.raca = raca;
-  // }
-  Animal.semRaca(
-    this.name,
-    this.nBrinco,
-    this.sexo,
-    this.dataNascimento,
-  ) {
-    this.raca = '0';
-  }
 
   Animal.recenNascido(
     this.name,
@@ -30,5 +16,26 @@ class Animal {
     this.raca,
   ) {
     this.dataNascimento = DateTime.now();
+  }
+
+  Map<String, dynamic> toMap() {
+    var map = new Map<String, dynamic>();
+    map['nBrinco'] = nBrinco;
+    map['nome'] = name;
+    map['sexo'] = sexo;
+    map['data_de_nascimento'] = dataNascimento;
+    map['raca'] = raca;
+
+    return map;
+  }
+
+  Animal.fromDoc(QueryDocumentSnapshot doc) {
+    Map<String, dynamic> map = doc.data();
+    this.nBrinco = doc.id;
+    this.name = map['nome'];
+    this.sexo = map['sexo'];
+    this.dataNascimento =
+        DateTime.parse(map['data_de_nascimento'].toDate().toString());
+    this.raca = map['raca'];
   }
 }
