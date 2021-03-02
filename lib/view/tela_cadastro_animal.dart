@@ -116,7 +116,7 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
       floatingActionButton: BotaoRodape(
         child: Text("Salvar"),
         onPressed: () {
-          Animal animal = Animal.recenNascido("touro", "23", "macho", "Giu");
+          Animal animal = Animal.recenNascido("123", "novilho", "macho", "Giu");
           ControllerRebanho.cadastrarAnimal(animal);
           Navigator.pop(context);
         },

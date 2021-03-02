@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Animal {
-  String name;
   String nBrinco;
+  String name;
   String sexo;
   DateTime dataNascimento;
   String raca;
 
-  Animal(this.name, this.nBrinco, this.sexo, this.dataNascimento, this.raca);
+  Animal(this.nBrinco, this.name, this.sexo, this.dataNascimento, this.raca);
 
   Animal.recenNascido(
-    this.name,
     this.nBrinco,
+    this.name,
     this.sexo,
     this.raca,
   ) {
