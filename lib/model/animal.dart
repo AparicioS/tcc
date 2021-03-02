@@ -20,7 +20,6 @@ class Animal {
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
-    map['nBrinco'] = nBrinco;
     map['nome'] = name;
     map['sexo'] = sexo;
     map['data_de_nascimento'] = dataNascimento;

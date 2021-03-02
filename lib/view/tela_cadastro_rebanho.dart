@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:diagnostico_bovino/controller/controller_rebanho.dart';
+import 'package:diagnostico_bovino/model/rebanho.dart';
+import 'package:diagnostico_bovino/model/usuario.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +126,12 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
         ],
       ),
       floatingActionButton: BotaoRodape(
-          child: Text("Salvar"), onPressed: () => Navigator.pop(context)),
+          child: Text("Salvar"),
+          onPressed: () {
+            Rebanho rebanho = Rebanho(Usuario().id, 'Sul', 'cria', 'pasto', '');
+            ControllerRebanho.cadastrarRebanho(rebanho);
+            Navigator.pop(context);
+          }),
     );
   }
 }

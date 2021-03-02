@@ -1,3 +1,4 @@
+import 'package:diagnostico_bovino/model/usuario.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:diagnostico_bovino/view/rebanho_search_delegate.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_animal.dart';
@@ -11,6 +12,7 @@ import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 class TelaPricipal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Usuario().caregaUsuarioLitUser(context.getSignedInUser());
     final sizewidth = MediaQuery.of(context).size.width;
     final sizeheight = (MediaQuery.of(context).size.height -
         (kToolbarHeight + MediaQuery.of(context).padding.top));
