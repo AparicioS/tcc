@@ -3,8 +3,8 @@ import 'package:diagnostico_bovino/controller/controller_rebanho.dart';
 import 'package:diagnostico_bovino/model/animal.dart';
 import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 class TelaCadastroAnimal extends StatefulWidget {
   @override
@@ -14,11 +14,14 @@ class TelaCadastroAnimal extends StatefulWidget {
 class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
   List<DropdownMenuItem> listaRaca;
   List<DropdownMenuItem> listaSexo;
-  String uid;
+  Animal animal;
+  String msg;
 
   @override
   void initState() {
     setState(() {
+      msg = 'ao incluir registro ...';
+      animal = Animal.novo();
       listaSexo = ['Fêmea', 'Macho']
           .map((item) => DropdownMenuItem<String>(
                 child: Text(item),
@@ -40,83 +43,101 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
         listaRaca = racas;
       });
     });
-
     super.initState();
   }
 
   @override
-  void didChangeDependencies() {
-    context.getSignedInUser().when(
-          (user) => uid = user.uid,
-          empty: () => Text('Not signed in'),
-          initializing: () => Text('Loading'),
-        );
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    var form = GlobalKey<FormState>();
     return ScaffoldLayout(
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 60,
-            child: Center(
-              child: Title(
-                  title: 'Dados do Animal',
-                  color: Cor.titulo(),
-                  child: Text(
-                    "Dados do Animal",
-                    style: TextStyle(fontSize: 30),
-                  )),
+      body: Form(
+        key: form,
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Title(
+                    title: 'Dados do Animal',
+                    color: Cor.titulo(),
+                    child: Text(
+                      "Dados do Animal",
+                      style: TextStyle(fontSize: 30),
+                    )),
+              ),
             ),
-          ),
-          TextFormField(
-            validator: (data) {
-              if (data.isEmpty) {
-                return ' invalido';
-              }
-              return null;
-            },
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: "Numero do brinco:"),
-          ),
-          SizedBox(height: 30),
-          TextField(
-            obscureText: true,
-            decoration: InputDecoration(labelText: "Nome/Identificação:"),
-          ),
-          SizedBox(height: 30),
-          DataUtil.campoData('Data de Nascimento :'),
-          Container(
-            child: DropdownButtonFormField<String>(
+            TextFormField(
+              onSaved: (valor) => animal.nBrinco = valor,
+              validator: (valor) {
+                if (valor.isEmpty) {
+                  return ' invalido';
+                }
+                return null;
+              },
+              autofocus: true,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: "Numero do brinco:"),
+            ),
+            SizedBox(height: 30),
+            TextFormField(
+              onSaved: (valor) => animal.name = valor,
+              decoration: InputDecoration(labelText: "Nome/Identificação:"),
+            ),
+            SizedBox(height: 30),
+            DataUtil.campoData(
+              'Data de Nascimento :',
+              (valor) => animal.dataNascimento = valor.add(Duration(hours: 3)),
+            ),
+            DropdownButtonFormField<String>(
+              onSaved: (valor) => animal.raca = valor,
               decoration: InputDecoration(
                   labelText: "Raça:",
                   contentPadding: EdgeInsets.all(10),
                   counterStyle: TextStyle(color: Colors.red)),
               items: listaRaca,
-              onChanged: (value) => print(" a raça selecionada foi $value"),
+              onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-          Container(
-            child: DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(
+              onSaved: (valor) => animal.sexo = valor,
               decoration: InputDecoration(
                 labelText: "Sexo:",
                 contentPadding: EdgeInsets.all(10),
               ),
               items: listaSexo,
-              onChanged: (value) => print("sexo selecionado: $value"),
+              onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: BotaoRodape(
         child: Text("Salvar"),
-        onPressed: () {
-          Animal animal = Animal.recenNascido("123", "novilho", "macho", "Giu");
-          ControllerRebanho.cadastrarAnimal(animal);
-          Navigator.pop(context);
+        onPressed: () async {
+          if (form.currentState.validate()) {
+            form.currentState.save();
+            var retorno = await ControllerRebanho.cadastrarAnimal(animal);
+            showDialog(
+                context: context,
+                builder: (ctx) {
+                  return CupertinoAlertDialog(
+                    title: Text('Animal'),
+                    content: Text(retorno + 'ao incluir o registro...'),
+                    actions: [
+                      FlatButton(
+                          onPressed: () {
+                            form.currentState.reset();
+                            Navigator.pop(ctx);
+                          },
+                          child: Text('Novo cadstro')),
+                      FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(ctx);
+                          },
+                          child: Text('OK'))
+                    ],
+                  );
+                });
+          }
         },
       ),
     );

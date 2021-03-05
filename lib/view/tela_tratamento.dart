@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diagnostico_bovino/model/animal.dart';
 import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:diagnostico_bovino/view/painel_dados_animal.dart';
 import 'package:flutter/material.dart';
 
 class TelaTratamento extends StatefulWidget {
@@ -11,12 +12,10 @@ class TelaTratamento extends StatefulWidget {
 
 class _TelaTratamentoState extends State<TelaTratamento> {
   List<DropdownMenuItem> listaViaAdministracao;
-  Container dadosDoAnimal;
   Animal animal;
 
   @override
   void initState() {
-    print('initState');
     FirebaseFirestore.instance
         .collection('aplicacao')
         .snapshots()
@@ -31,7 +30,6 @@ class _TelaTratamentoState extends State<TelaTratamento> {
         listaViaAdministracao = lista;
       });
     });
-
     super.initState();
   }
 
@@ -39,42 +37,6 @@ class _TelaTratamentoState extends State<TelaTratamento> {
   void didChangeDependencies() {
     setState(() {
       animal = ModalRoute.of(context).settings.arguments;
-      dadosDoAnimal = Container(
-        child: Column(
-          children: [
-            Container(
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Title(
-                    color: Cor.titulo(),
-                    child: Text(
-                      'Dados do Animal',
-                      style: TextStyle(fontSize: 20),
-                    )),
-              ),
-            ),
-            Container(
-                child: Table(children: [
-              TableRow(children: [
-                Text('Numero do brinco:'),
-                Text(animal.nBrinco),
-              ]),
-              TableRow(children: [
-                Text('Nome/identificação:'),
-                Text(animal.name),
-              ]),
-              TableRow(children: [
-                Text('Idade:'),
-                Text(DataUtil.idadebyDataNascimento(animal.dataNascimento)),
-              ]),
-              TableRow(children: [
-                Text('Sexo:'),
-                Text(animal.sexo),
-              ]),
-            ])),
-          ],
-        ),
-      );
     });
     super.didChangeDependencies();
   }
@@ -82,47 +44,59 @@ class _TelaTratamentoState extends State<TelaTratamento> {
   @override
   Widget build(BuildContext context) {
     animal = ModalRoute.of(context).settings.arguments;
-    print('buid');
+    var form = GlobalKey<FormState>();
     return ScaffoldLayout(
-        body: ListView(
-          children: [
-            SizedBox(
-              height: 50,
-              child: Center(
-                child: Title(
-                    title: 'Aplicar Tratamento',
-                    color: Cor.titulo(),
-                    child: Text(
-                      "Aplicar Tratamento",
-                      style: TextStyle(fontSize: 30),
-                    )),
+        body: Form(
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 50,
+                child: Center(
+                  child: Title(
+                      title: 'Aplicar Tratamento',
+                      color: Cor.titulo(),
+                      child: Text(
+                        "Aplicar Tratamento",
+                        style: TextStyle(fontSize: 30),
+                      )),
+                ),
               ),
-            ),
-            dadosDoAnimal,
-            SizedBox(height: 30),
-            DataUtil.campoData('Data de Aplicação:'),
-            SizedBox(height: 30),
-            TextField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(labelText: 'Medicamento:'),
-            ),
-            SizedBox(height: 30),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                  labelText: "Via de Aplicação:",
-                  contentPadding: EdgeInsets.all(10),
-                  counterStyle: TextStyle(color: Colors.red)),
-              items: listaViaAdministracao,
-              onChanged: (value) => print("selecionado: $value"),
-            ),
-            SizedBox(height: 30),
-            TextField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(labelText: 'Dosagem:'),
-            ),
-          ],
+              PainelDadosAnimal(animal: animal),
+              SizedBox(height: 30),
+              DataUtil.campoData(
+                  'Data de Aplicação:',
+                  (valor) =>
+                      animal.dataNascimento = valor.add(Duration(hours: 3))),
+              SizedBox(height: 30),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(labelText: 'Medicamento:'),
+              ),
+              SizedBox(height: 30),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                    labelText: "Via de Aplicação:",
+                    contentPadding: EdgeInsets.all(10),
+                    counterStyle: TextStyle(color: Colors.red)),
+                items: listaViaAdministracao,
+                onChanged: (value) => print("selecionado: $value"),
+              ),
+              SizedBox(height: 30),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(labelText: 'Dosagem:'),
+              ),
+            ],
+          ),
         ),
         floatingActionButton: BotaoRodape(
-            child: Text("Salvar"), onPressed: () => Navigator.pop(context)));
+          child: Text("Salvar"),
+          onPressed: () async {
+            if (form.currentState.validate()) {
+              form.currentState.save();
+              Navigator.pop(context);
+            }
+          },
+        ));
   }
 }

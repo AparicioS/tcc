@@ -3,6 +3,7 @@ import 'package:diagnostico_bovino/controller/controller_rebanho.dart';
 import 'package:diagnostico_bovino/model/rebanho.dart';
 import 'package:diagnostico_bovino/model/usuario.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TelaCadastroRebanho extends StatefulWidget {
@@ -14,9 +15,26 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
   List<DropdownMenuItem> listaRegiao;
   List<DropdownMenuItem> listaAlimentacao;
   List<DropdownMenuItem> listaFinalidade;
+  Rebanho rebanho;
+  String msg;
 
   @override
   void initState() {
+    rebanho = Rebanho.novo();
+    FirebaseFirestore.instance
+        .collection('Rebanho')
+        .doc(Usuario().id)
+        .get()
+        .then((value) {
+      setState(() {
+        if (value.id == Usuario().id) {
+          rebanho = Rebanho.fromDoc(value.data());
+          msg = 'ao alterar registro...';
+        } else {
+          msg = 'ao incluir registro ...';
+        }
+      });
+    });
     FirebaseFirestore.instance
         .collection('regiao')
         .snapshots()
@@ -65,23 +83,27 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
 
   @override
   Widget build(BuildContext context) {
+    var form = GlobalKey<FormState>();
     return ScaffoldLayout(
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 60,
-            child: Center(
-              child: Title(
-                  title: 'Dados do Rebanho',
-                  color: Cor.titulo(),
-                  child: Text(
-                    'Dados do Rebanho',
-                    style: TextStyle(fontSize: 30),
-                  )),
+      body: Form(
+        key: form,
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Title(
+                    title: 'Dados do Rebanho',
+                    color: Cor.titulo(),
+                    child: Text(
+                      'Dados do Rebanho',
+                      style: TextStyle(fontSize: 30),
+                    )),
+              ),
             ),
-          ),
-          Container(
-            child: DropdownButtonFormField<String>(
+            DropdownButtonFormField<String>(
+              value: rebanho.regiao,
+              onSaved: (data) => rebanho.regiao = data,
               decoration: InputDecoration(
                   labelText: "Região:",
                   contentPadding: EdgeInsets.all(10),
@@ -89,10 +111,10 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
               items: listaRegiao,
               onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-          SizedBox(height: 30),
-          Container(
-            child: DropdownButtonFormField<String>(
+            SizedBox(height: 30),
+            DropdownButtonFormField<String>(
+              value: rebanho.alimentacaoPrincipal,
+              onSaved: (data) => rebanho.alimentacaoPrincipal = data,
               decoration: InputDecoration(
                   labelText: "Alimentação principal:",
                   contentPadding: EdgeInsets.all(10),
@@ -100,10 +122,10 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
               items: listaAlimentacao,
               onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-          SizedBox(height: 30),
-          Container(
-            child: DropdownButtonFormField<String>(
+            SizedBox(height: 30),
+            DropdownButtonFormField<String>(
+              value: rebanho.alimentacaoComplementar,
+              onSaved: (data) => rebanho.alimentacaoComplementar = data,
               decoration: InputDecoration(
                   labelText: "Alimentação complementar:",
                   contentPadding: EdgeInsets.all(10),
@@ -111,10 +133,10 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
               items: listaAlimentacao,
               onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-          SizedBox(height: 30),
-          Container(
-            child: DropdownButtonFormField<String>(
+            SizedBox(height: 30),
+            DropdownButtonFormField<String>(
+              value: rebanho.finalidade,
+              onSaved: (data) => rebanho.finalidade = data,
               decoration: InputDecoration(
                   labelText: "Finalidade:",
                   contentPadding: EdgeInsets.all(10),
@@ -122,14 +144,29 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
               items: listaFinalidade,
               onChanged: (value) => print("selecionado: $value"),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: BotaoRodape(
           child: Text("Salvar"),
-          onPressed: () {
-            Rebanho rebanho = Rebanho(Usuario().id, 'Sul', 'cria', 'pasto', '');
-            ControllerRebanho.cadastrarRebanho(rebanho);
+          onPressed: () async {
+            if (form.currentState.validate()) {
+              form.currentState.save();
+              var retorno = await ControllerRebanho.cadastrarRebanho(rebanho);
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('Rebanho'),
+                      content: Text(retorno + msg),
+                      actions: [
+                        FlatButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('OK'))
+                      ],
+                    );
+                  });
+            }
             Navigator.pop(context);
           }),
     );

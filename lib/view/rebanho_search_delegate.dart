@@ -63,6 +63,9 @@ class RebanhoSearchDelegate extends SearchDelegate {
             return Center(child: CircularProgressIndicator());
             break;
           default:
+            if (snapsho.data.docs.length == 0) {
+              print('lista vazia');
+            }
             List<Animal> rebanho = snapsho.data.docs
                 .map((doc) => Animal.fromDoc(doc))
                 .where((animal) => animal.nBrinco
@@ -76,7 +79,7 @@ class RebanhoSearchDelegate extends SearchDelegate {
                 return ListTile(
                   leading: Text(animal.nBrinco),
                   title: Text(animal.name),
-                  subtitle: Text(animal.sexo),
+                  subtitle: Text(animal.sexo ?? ''),
                   trailing: Text(
                       DataUtil.idadebyDataNascimento(animal.dataNascimento)),
                   onTap: () {

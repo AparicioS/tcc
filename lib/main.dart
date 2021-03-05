@@ -11,6 +11,7 @@ void main() async {
       home: LitAuthInit(
     authProviders: AuthProviders(emailAndPassword: true, google: true),
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate

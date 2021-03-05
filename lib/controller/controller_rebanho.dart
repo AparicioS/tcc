@@ -3,19 +3,29 @@ import 'package:diagnostico_bovino/model/usuario.dart';
 
 class ControllerRebanho {
   static cadastrarRebanho(rebanho) {
-    FirebaseFirestore.instance
+    if (Usuario().id == null) {
+      return 'Falha ';
+    }
+    return FirebaseFirestore.instance
         .collection('Rebanho')
         .doc(Usuario().id)
-        .set(rebanho.toMap());
+        .set(rebanho.toMap())
+        .then((value) => 'Sucesso ')
+        .catchError((erro) => 'Falha ');
   }
 
   static cadastrarAnimal(animal) {
-    FirebaseFirestore.instance
+    if (Usuario().id == null) {
+      return 'Falha ';
+    }
+    return FirebaseFirestore.instance
         .collection('Rebanho')
         .doc(Usuario().id)
         .collection('Animais')
         .doc(animal.nBrinco)
-        .set(animal.toMap());
+        .set(animal.toMap())
+        .then((value) => 'Sucesso ')
+        .catchError((erro) => 'Falha ');
   }
 
   static cadastrarPesagem(animal, data, peso) {

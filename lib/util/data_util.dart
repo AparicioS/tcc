@@ -76,13 +76,13 @@ class DataUtil {
   ///DateTimeField and showDatePicker
   ///
   ///retorna um Widget de data (campo e seletor ) formatado em portugues br
-  static DateTimeField campoData(String label) {
+  static DateTimeField campoData(String label, onSaved) {
     return DateTimeField(
+        onSaved: onSaved,
         decoration: InputDecoration(
           labelText: label,
         ),
         format: DateFormat('dd/MM/yyyy'),
-        onSaved: (data) => print(data),
         onChanged: (data) {
           print(DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br').format(data));
         },
@@ -96,5 +96,9 @@ class DataUtil {
               firstDate: DateTime.now().subtract(Duration(days: 730)),
               lastDate: DateTime.now());
         });
+  }
+
+  static toStringData(DateTime data) {
+    return DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br').format(data);
   }
 }
