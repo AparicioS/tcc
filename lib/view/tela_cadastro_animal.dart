@@ -46,7 +46,6 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
 
   @override
   void didChangeDependencies() {
-    print('didChangeDependencies');
     context.getSignedInUser().when(
           (user) => uid = user.uid,
           empty: () => Text('Not signed in'),
@@ -57,7 +56,6 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return ScaffoldLayout(
       body: ListView(
         children: [

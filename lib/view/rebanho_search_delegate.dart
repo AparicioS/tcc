@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diagnostico_bovino/model/animal.dart';
+import 'package:diagnostico_bovino/model/usuario.dart';
 import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:lit_firebase_auth/lit_firebase_auth.dart';
 
 class RebanhoSearchDelegate extends SearchDelegate {
   RebanhoSearchDelegate({
@@ -47,16 +47,11 @@ class RebanhoSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    String uid;
-    context.getSignedInUser().when(
-          (user) => uid = user.uid,
-          empty: () => Text('Not signed in'),
-          initializing: () => Text('Loading'),
-        );
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('Animal')
-          .where("uid", isEqualTo: uid)
+          .collection('Rebanho')
+          .doc(Usuario().id)
+          .collection('Animais')
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapsho) {
         switch (snapsho.connectionState) {
@@ -97,16 +92,11 @@ class RebanhoSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    String uid;
-    context.getSignedInUser().when(
-          (user) => uid = user.uid,
-          empty: () => Text('Not signed in'),
-          initializing: () => Text('Loading'),
-        );
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('Animal')
-          .where("uid", isEqualTo: uid)
+          .collection('Rebanho')
+          .doc(Usuario().id)
+          .collection('Animais')
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapsho) {
         switch (snapsho.connectionState) {
@@ -121,7 +111,6 @@ class RebanhoSearchDelegate extends SearchDelegate {
                     .toLowerCase()
                     .contains(this.query.toLowerCase()))
                 .toList();
-            print(snapsho.data.docs);
             return ListView.builder(
               itemCount: rebanho.length,
               itemBuilder: (context, index) {
