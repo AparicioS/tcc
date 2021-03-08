@@ -29,12 +29,13 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
       setState(() {
         if (value.id == Usuario().id) {
           rebanho = Rebanho.fromDoc(value.data());
-          msg = 'ao alterar registro...';
+          msg = 'ao alterar registro.';
         } else {
-          msg = 'ao incluir registro ...';
+          msg = 'ao incluir registro.';
         }
       });
     });
+
     FirebaseFirestore.instance
         .collection('regiao')
         .snapshots()
@@ -49,6 +50,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
         listaRegiao = lista;
       });
     });
+
     FirebaseFirestore.instance
         .collection('alimentacao')
         .snapshots()
@@ -63,6 +65,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
         listaAlimentacao = lista;
       });
     });
+
     FirebaseFirestore.instance
         .collection('finalidade')
         .snapshots()
@@ -77,7 +80,6 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
         listaFinalidade = lista;
       });
     });
-
     super.initState();
   }
 
@@ -153,15 +155,16 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
             if (form.currentState.validate()) {
               form.currentState.save();
               var retorno = await ControllerRebanho.cadastrarRebanho(rebanho);
+              print(retorno);
               showDialog(
                   context: context,
-                  builder: (context) {
+                  builder: (contx) {
                     return CupertinoAlertDialog(
                       title: Text('Rebanho'),
                       content: Text(retorno + msg),
                       actions: [
                         FlatButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () => Navigator.pop(contx),
                             child: Text('OK'))
                       ],
                     );

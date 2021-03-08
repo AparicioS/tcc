@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Cor {
+  static Color texto([double opacity = 1]) => Color.fromRGBO(0, 0, 0, opacity);
   static Color erro([double opacity = 1]) =>
       Color.fromRGBO(178, 34, 34, opacity);
+  static Color sucesso([double opacity = 1]) =>
+      Color.fromRGBO(0, 0, 255, opacity);
   static Color titulo([double opacity = 1]) =>
       Color.fromRGBO(36, 9, 205, opacity);
   static Color cabecario([double opacity = 1]) =>
@@ -13,6 +16,8 @@ class Cor {
       Color.fromRGBO(39, 174, 96, opacity);
   static Color botaoAzul([double opacity = 0.9]) =>
       Color.fromRGBO(17, 116, 255, opacity);
+  static Color textoAzul([double opacity = 1]) =>
+      Color.fromRGBO(0, 0, 250, opacity);
 }
 
 class ScaffoldLayout extends Scaffold {

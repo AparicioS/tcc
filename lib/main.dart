@@ -8,16 +8,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-      home: LitAuthInit(
-    authProviders: AuthProviders(emailAndPassword: true, google: true),
-    child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      supportedLocales: [const Locale('pt', 'BR')],
-      home: Home(),
-    ),
-  )));
+      home: LitAuthInit(
+        authProviders: AuthProviders(emailAndPassword: true, google: true),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          supportedLocales: [const Locale('pt', 'BR')],
+          home: Home(),
+        ),
+      )));
 }

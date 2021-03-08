@@ -5,6 +5,7 @@ import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TelaCadastroAnimal extends StatefulWidget {
   @override
@@ -67,10 +68,20 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
               ),
             ),
             TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              // onChanged: (valor) {
+              //   print('brinco cadastrado' + valor);
+              // },
+              // onEditingComplete: () {
+              //   print('brinco cadastrado...');
+              // },
               onSaved: (valor) => animal.nBrinco = valor,
               validator: (valor) {
                 if (valor.isEmpty) {
-                  return ' invalido';
+                  return 'campo obrigatorio';
                 }
                 return null;
               },
@@ -80,6 +91,9 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
             ),
             SizedBox(height: 30),
             TextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
+              ],
               onSaved: (valor) => animal.name = valor,
               decoration: InputDecoration(labelText: "Nome/Identificação:"),
             ),
