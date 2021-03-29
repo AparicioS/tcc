@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.u14bits.aparicio.diagnostico_bovino">
    <application
-        android:label="diagnostico_bovino"
+        android:label="Diagnostico Bovino"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
