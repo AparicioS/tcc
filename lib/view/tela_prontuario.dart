@@ -1,12 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:diagnostico_bovino/model/animal.dart';
+import 'package:diagnostico_bovino/model/manejo.dart';
+import 'package:diagnostico_bovino/model/tratamento.dart';
+import 'package:diagnostico_bovino/model/usuario.dart';
+import 'package:diagnostico_bovino/util/data_util.dart';
 import 'package:diagnostico_bovino/view/painel_dados_animal.dart';
 import 'package:flutter/material.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 
-class TelaProntuario extends StatelessWidget {
+class TelaProntuario extends StatefulWidget {
+  @override
+  _TelaProntuarioState createState() => _TelaProntuarioState();
+}
+
+class _TelaProntuarioState extends State<TelaProntuario> {
+  Animal animal;
+  @override
+  void didChangeDependencies() {
+    animal = ModalRoute.of(context).settings.arguments;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Animal animal = ModalRoute.of(context).settings.arguments;
     return ScaffoldLayout(
         body: ListView(
           children: [
@@ -24,16 +40,76 @@ class TelaProntuario extends StatelessWidget {
             ),
             PainelDadosAnimal(animal: animal),
             SizedBox(height: 30),
-            pesagensRealizadas(animal),
+            manejo(),
             SizedBox(height: 30),
-            tratamentosAplicados(animal)
+            tratamentos()
           ],
         ),
         floatingActionButton: BotaoRodape(
             child: Text("Fechar"), onPressed: () => Navigator.pop(context)));
   }
 
-  tratamentosAplicados(animal) {
+  tratamentos() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('Rebanho')
+            .doc(Usuario().id)
+            .collection('Animais')
+            .doc(animal.nBrinco)
+            .collection('tratamento')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapsho) {
+          switch (snapsho.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+              break;
+            case ConnectionState.done:
+              return Center(child: CircularProgressIndicator());
+              break;
+            default:
+              if (snapsho.data.docs.length == 0) {
+                print('lista vazia');
+              }
+              List<Tratamento> lista = snapsho.data.docs
+                  .map((doc) => Tratamento.fromDoc(doc))
+                  .toList();
+              return tratamentosAplicados(lista);
+          }
+        });
+  }
+
+  manejo() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('Rebanho')
+            .doc(Usuario().id)
+            .collection('Animais')
+            .doc(animal.nBrinco)
+            .collection('manejo')
+            .where('ativida' 'pesagem')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapsho) {
+          switch (snapsho.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+              break;
+            case ConnectionState.done:
+              return Center(child: CircularProgressIndicator());
+              break;
+            default:
+              if (snapsho.data.docs.length == 0) {
+                print('lista vazia');
+              }
+              List<Manejo> lista =
+                  snapsho.data.docs.map((doc) => Manejo.fromDoc(doc)).toList();
+              return pesagensRealizadas(lista);
+          }
+        });
+  }
+
+  tratamentosAplicados(tratamentos) {
     return Column(
       children: [
         Container(
@@ -45,35 +121,40 @@ class TelaProntuario extends StatelessWidget {
               )),
         ),
         Container(
-          child: DataTable(columnSpacing: 50, columns: [
-            DataColumn(
-                label: Text(
-              'Data',
-              style: TextStyle(fontSize: 15),
-            )),
-            DataColumn(
-                label: Text(
-              'Finalidade',
-              style: TextStyle(fontSize: 15),
-            )),
-            DataColumn(
-                label: Text(
-              'Medicamento',
-              style: TextStyle(fontSize: 15),
-            )),
-          ], rows: [
-            DataRow(cells: [
-              DataCell(Text('10/12/2020')),
-              DataCell(Text('vacina')),
-              DataCell(Text('Azatioprina'))
-            ]),
-          ]),
+          child: DataTable(
+            columnSpacing: 50,
+            columns: [
+              DataColumn(
+                  label: Text(
+                'Data',
+                style: TextStyle(fontSize: 15),
+              )),
+              DataColumn(
+                  label: Text(
+                'Finalidade',
+                style: TextStyle(fontSize: 15),
+              )),
+              DataColumn(
+                  label: Text(
+                'Medicamento',
+                style: TextStyle(fontSize: 15),
+              )),
+            ],
+            rows: List<DataRow>.generate(
+                tratamentos.length,
+                (index) => DataRow(cells: [
+                      DataCell(Text(DataUtil.toStringData(
+                          tratamentos[index].dataAplicacao))),
+                      DataCell(Text(tratamentos[index].finalidade.toString())),
+                      DataCell(Text(tratamentos[index].medicamento.toString()))
+                    ])),
+          ),
         ),
       ],
     );
   }
 
-  pesagensRealizadas(animal) {
+  pesagensRealizadas(pesos) {
     return Column(
       children: [
         Container(
@@ -85,23 +166,27 @@ class TelaProntuario extends StatelessWidget {
               )),
         ),
         Container(
-          child: DataTable(columnSpacing: 180, columns: [
-            DataColumn(
-                label: Text(
-              'data:',
-              style: TextStyle(fontSize: 15),
-            )),
-            DataColumn(
-                label: Text(
-              'peso/Kg:',
-              style: TextStyle(fontSize: 15),
-            )),
-          ], rows: [
-            DataRow(cells: [
-              DataCell(Text('10/12/2020')),
-              DataCell(Text('453,300'))
-            ]),
-          ]),
+          child: DataTable(
+            columnSpacing: 180,
+            columns: [
+              DataColumn(
+                  label: Text(
+                'data:',
+                style: TextStyle(fontSize: 15),
+              )),
+              DataColumn(
+                  label: Text(
+                'peso/Kg:',
+                style: TextStyle(fontSize: 15),
+              )),
+            ],
+            rows: List<DataRow>.generate(
+                pesos.length,
+                (index) => DataRow(cells: [
+                      DataCell(Text(DataUtil.toStringData(pesos[index].data))),
+                      DataCell(Text(pesos[index].valor.toString())),
+                    ])),
+          ),
         ),
       ],
     );

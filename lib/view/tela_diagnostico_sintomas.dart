@@ -42,9 +42,11 @@ class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
               onPressed: () => showSearch(
                       context: context, delegate: SintomasSearchDelegate())
                   .then((value) {
-                setState(() {
-                  sintomas.add(value);
-                });
+                if (value != null) {
+                  setState(() {
+                    sintomas.add(value);
+                  });
+                }
               }),
             ),
           ),

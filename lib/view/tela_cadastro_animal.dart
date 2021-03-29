@@ -72,12 +72,6 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
                 FilteringTextInputFormatter.deny(RegExp(r'\s')),
                 FilteringTextInputFormatter.digitsOnly
               ],
-              // onChanged: (valor) {
-              //   print('brinco cadastrado' + valor);
-              // },
-              // onEditingComplete: () {
-              //   print('brinco cadastrado...');
-              // },
               onSaved: (valor) => animal.nBrinco = valor,
               validator: (valor) {
                 if (valor.isEmpty) {

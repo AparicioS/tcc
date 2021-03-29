@@ -28,15 +28,17 @@ class ControllerRebanho {
         .catchError((erro) => 'Falha ');
   }
 
-  static cadastrarPesagem(animal, data, peso) {
+  static cadastrarManejo(animal, manejo) {
     FirebaseFirestore.instance
         .collection('Rebanho')
         .doc(Usuario().id)
         .collection('Animais')
         .doc(animal.nBrinco)
-        .collection('peso')
+        .collection('manejo')
         .doc()
-        .set({'data': data, 'peso': peso});
+        .set(manejo.toMap())
+        .then((value) => 'Sucesso ')
+        .catchError((erro) => 'Falha ');
   }
 
   static cadastrarTratamento(animal, tatamento) {
