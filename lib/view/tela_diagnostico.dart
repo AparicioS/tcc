@@ -19,18 +19,36 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
               style: TextStyle(fontSize: 30),
             )),
             SizedBox(height: 30),
-            TextField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(labelText: "Sintoma:"),
+            Container(
+              child: DataTable(columnSpacing: 180, columns: [
+                DataColumn(label: Text('Resultados')),
+              ], rows: [
+                DataRow(
+                    cells: [DataCell(Text('lista de possiveis resultados '))]),
+              ]),
             ),
             SizedBox(height: 30),
-            TextField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(labelText: "Sintoma relacionado:"),
+            Container(
+              child: DataTable(columnSpacing: 180, columns: [
+                DataColumn(label: Text('Diagnostico')),
+              ], rows: [
+                DataRow(cells: [
+                  DataCell(Text(
+                      'Sinais clinicos e informações consideradas no diagnostico apresentado'))
+                ]),
+              ]),
             ),
             SizedBox(height: 30),
+            Container(
+              child: DataTable(columnSpacing: 180, columns: [
+                DataColumn(label: Text('Recomendação')),
+              ], rows: [
+                DataRow(cells: [
+                  DataCell(Text(
+                      'Recomendações de consulta tratamentes e procedimentos'))
+                ]),
+              ]),
+            ),
           ],
         ),
         floatingActionButton: BotaoRodape(

@@ -3,6 +3,7 @@ import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:diagnostico_bovino/view/rebanho_search_delegate.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_animal.dart';
 import 'package:diagnostico_bovino/view/tela_cadastro_rebanho.dart';
+import 'package:diagnostico_bovino/view/tela_diagnostico_sintomas.dart';
 import 'package:diagnostico_bovino/view/tela_prontuario.dart';
 import 'package:diagnostico_bovino/view/tela_tratamento.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +30,12 @@ class TelaPricipal extends StatelessWidget {
     abrirTratamento(animal) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => TelaTratamento(),
+          settings: RouteSettings(arguments: animal)));
+    }
+
+    abrirDiagnostico(animal) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => TelaDiagnosticoSintomas(),
           settings: RouteSettings(arguments: animal)));
     }
 
@@ -127,7 +134,7 @@ class TelaPricipal extends StatelessWidget {
                               context: context,
                               delegate: RebanhoSearchDelegate())
                           .then((value) =>
-                              value != null ? abrirTratamento(value) : null),
+                              value != null ? abrirDiagnostico(value) : null),
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Column(

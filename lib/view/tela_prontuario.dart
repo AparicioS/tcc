@@ -45,15 +45,30 @@ class TelaProntuario extends StatelessWidget {
               )),
         ),
         Container(
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.topCenter,
-            child: Table(children: [
-              TableRow(children: [
-                Text('Data:', style: TextStyle(fontSize: 20)),
-                Text('Tratamento:', style: TextStyle(fontSize: 20)),
-                Text('????:', style: TextStyle(fontSize: 20)),
-              ]),
-            ])),
+          child: DataTable(columnSpacing: 50, columns: [
+            DataColumn(
+                label: Text(
+              'Data',
+              style: TextStyle(fontSize: 15),
+            )),
+            DataColumn(
+                label: Text(
+              'Finalidade',
+              style: TextStyle(fontSize: 15),
+            )),
+            DataColumn(
+                label: Text(
+              'Medicamento',
+              style: TextStyle(fontSize: 15),
+            )),
+          ], rows: [
+            DataRow(cells: [
+              DataCell(Text('10/12/2020')),
+              DataCell(Text('vacina')),
+              DataCell(Text('Azatioprina'))
+            ]),
+          ]),
+        ),
       ],
     );
   }
@@ -70,25 +85,23 @@ class TelaProntuario extends StatelessWidget {
               )),
         ),
         Container(
-          child: DataTable(
-              columnSpacing: 150,
-              dataTextStyle: TextStyle(color: Cor.titulo(), fontSize: 20),
-              columns: [
-                DataColumn(
-                    label: Text(
-                  'data:',
-                )),
-                DataColumn(
-                    label: Text(
-                  'peso/Kg:',
-                )),
-              ],
-              rows: [
-                DataRow(cells: [
-                  DataCell(Text('10/12/2020')),
-                  DataCell(Text('453,300'))
-                ]),
-              ]),
+          child: DataTable(columnSpacing: 180, columns: [
+            DataColumn(
+                label: Text(
+              'data:',
+              style: TextStyle(fontSize: 15),
+            )),
+            DataColumn(
+                label: Text(
+              'peso/Kg:',
+              style: TextStyle(fontSize: 15),
+            )),
+          ], rows: [
+            DataRow(cells: [
+              DataCell(Text('10/12/2020')),
+              DataCell(Text('453,300'))
+            ]),
+          ]),
         ),
       ],
     );

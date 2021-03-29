@@ -39,14 +39,19 @@ class ControllerRebanho {
         .set({'data': data, 'peso': peso});
   }
 
-  static cadastrarTratamento(animal, aplicacao) {
+  static cadastrarTratamento(animal, tatamento) {
+    if (Usuario().id == null) {
+      return 'Falha ';
+    }
     FirebaseFirestore.instance
         .collection('Rebanho')
         .doc(Usuario().id)
         .collection('Animais')
         .doc(animal.nBrinco)
         .collection('tratamento')
-        .doc()
-        .set(aplicacao.toMap());
+        .doc(tatamento.id)
+        .set(tatamento.toMap())
+        .then((value) => 'Sucesso ')
+        .catchError((erro) => 'Falha ');
   }
 }

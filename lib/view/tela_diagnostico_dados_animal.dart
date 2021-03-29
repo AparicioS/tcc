@@ -53,9 +53,10 @@ class _TelaDiagnosticoDadosAnimalState
           )),
           SizedBox(height: 30),
           TextField(
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
-                labelText: "Idade:", hintText: 'definier mascara para o campo'),
+                labelText: "Idade/meses:",
+                hintText: 'definier mascara para o campo'),
           ),
           SizedBox(height: 30),
           Container(
@@ -70,7 +71,7 @@ class _TelaDiagnosticoDadosAnimalState
           ),
           SizedBox(height: 30),
           TextField(
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: "Peso/Kg:"),
           ),
           SizedBox(height: 30),
