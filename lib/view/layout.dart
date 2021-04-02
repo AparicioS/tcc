@@ -43,10 +43,10 @@ class ScaffoldLayout extends Scaffold {
             floatingActionButton: floatingActionButton);
 }
 
-class BotaoRodape extends FlatButton {
+class BotaoRodape extends TextButton {
   BotaoRodape({onLongPress, onPressed, child})
       : super(
-            textColor: Colors.white,
+            style: TextButton.styleFrom(primary: Colors.white),
             onLongPress: onLongPress,
             onPressed: onPressed,
             child: Container(
@@ -64,16 +64,16 @@ class BotaoRodape extends FlatButton {
 class AcaoTopo extends Container {
   AcaoTopo({onPressed, icone, texto})
       : super(
-          height: 20,
+          height: 30,
           child: Align(
             alignment: Alignment.bottomRight,
-            child: FlatButton.icon(
+            child: TextButton.icon(
+                style: TextButton.styleFrom(primary: Cor.botaoAzul()),
                 label: Text(texto,
                     style: TextStyle(
-                      decoration: TextDecoration.underline,
-                    )),
+                        decoration: TextDecoration.underline,
+                        color: Cor.botaoAzul())),
                 icon: Icon(icone),
-                textColor: Cor.botaoAzul(),
                 onPressed: onPressed),
           ),
         );

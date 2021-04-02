@@ -163,7 +163,7 @@ class _TelaCadastroRebanhoState extends State<TelaCadastroRebanho> {
                       title: Text('Rebanho'),
                       content: Text(retorno + msg),
                       actions: [
-                        FlatButton(
+                        TextButton(
                             onPressed: () => Navigator.pop(contx),
                             child: Text('OK'))
                       ],

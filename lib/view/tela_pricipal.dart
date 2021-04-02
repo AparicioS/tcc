@@ -58,7 +58,8 @@ class TelaPricipal extends StatelessWidget {
               child: GridView.count(
                 crossAxisCount: 2,
                 children: [
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => TelaCadastroAnimal()));
@@ -77,7 +78,8 @@ class TelaPricipal extends StatelessWidget {
                                 Text('Animal',
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => TelaCadastroRebanho()));
@@ -96,7 +98,8 @@ class TelaPricipal extends StatelessWidget {
                                 Text('Rebanho',
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () => showSearch(
                               context: context,
                               delegate: RebanhoSearchDelegate())
@@ -116,7 +119,8 @@ class TelaPricipal extends StatelessWidget {
                                 Text('Prontuario',
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () => showSearch(
                               context: context,
                               delegate: RebanhoSearchDelegate())
@@ -136,7 +140,8 @@ class TelaPricipal extends StatelessWidget {
                                 Text('Manejo',
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () => showSearch(
                               context: context,
                               delegate: RebanhoSearchDelegate())
@@ -156,7 +161,8 @@ class TelaPricipal extends StatelessWidget {
                                 Text('Diagnostico',
                                     style: TextStyle(fontSize: _fonteSize))
                               ]))),
-                  FlatButton(
+                  TextButton(
+                      style: TextButton.styleFrom(primary: Cor.texto()),
                       onPressed: () => showSearch(
                               context: context,
                               delegate: RebanhoSearchDelegate())

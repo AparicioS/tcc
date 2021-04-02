@@ -1,3 +1,4 @@
+import 'package:diagnostico_bovino/controller/controller_home.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/material.dart';
 
@@ -52,11 +53,13 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
           ],
         ),
         floatingActionButton: BotaoRodape(
-          child: Text("Proximo"),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => TelaDiagnostico()));
-          },
-        ));
+            child: Text("Fechar"),
+            // onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+            //     MaterialPageRoute(
+            //         builder: (_) => LitAuthState(
+            //             authenticated: TelaPricipal(),
+            //             unauthenticated: TelaLogin())),
+            //     (Route) => Route == '/home')));
+            onPressed: () => ControllerHome.entrar(context)));
   }
 }
