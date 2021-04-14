@@ -1,6 +1,6 @@
-import 'package:diagnostico_bovino/view/layout.dart';
-import 'package:diagnostico_bovino/view/sintomas_search_delegate.dart';
+import 'package:diagnostico_bovino/controller/controller_diagnostico.dart';
 import 'package:diagnostico_bovino/view/tela_diagnostico.dart';
+import 'package:diagnostico_bovino/view/layout.dart';
 import 'package:flutter/material.dart';
 
 class TelaDiagnosticoSintomas extends StatefulWidget {
@@ -10,11 +10,11 @@ class TelaDiagnosticoSintomas extends StatefulWidget {
 }
 
 class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
-  List<String> sintomas;
+  ControllerDiagnostico ctrlDiagnostico;
   @override
   void initState() {
     setState(() {
-      sintomas = [];
+      ctrlDiagnostico = new ControllerDiagnostico();
     });
     super.initState();
   }
@@ -40,11 +40,11 @@ class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
             trailing: IconButton(
               icon: Icon(Icons.add),
               onPressed: () => showSearch(
-                      context: context, delegate: SintomasSearchDelegate())
+                      context: context, delegate: ctrlDiagnostico.getDelegate())
                   .then((value) {
                 if (value != null) {
                   setState(() {
-                    sintomas.add(value);
+                    ctrlDiagnostico.addSintomas(value);
                   });
                 }
               }),
@@ -53,15 +53,17 @@ class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
           Container(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: sintomas.length,
+              itemCount:
+                  ctrlDiagnostico.getSintomas().length, // sintomas.length,
               itemBuilder: (context, index) {
+                var sintomas = ctrlDiagnostico.getSintomas();
                 return ListTile(
                   title: Text(sintomas[index]),
                   trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
-                          sintomas.remove(sintomas[index]);
+                          ctrlDiagnostico.removeSintomas(sintomas[index]);
                         });
                       }),
                 );
@@ -72,8 +74,10 @@ class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
       ),
       floatingActionButton: BotaoRodape(
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => TelaDiagnostico()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => TelaDiagnostico(),
+                settings: RouteSettings(
+                    arguments: ctrlDiagnostico.getDoencafromSintomas())));
           },
           child: Text("Proximo")),
     );
