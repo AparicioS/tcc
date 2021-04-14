@@ -14,6 +14,7 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
   String caracteristica;
   String causas;
   String tratamento;
+  String referencia;
   @override
   void didChangeDependencies() {
     List<Doenca> doencas = ModalRoute.of(context).settings.arguments;
@@ -25,12 +26,14 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
         caracteristica = '';
         causas = '';
         tratamento = '';
+        referencia = '';
         break;
       case 1:
         resusltado = doencas[0].nome + '\n\nSintomas: ' + doencas[0].sintomas;
         caracteristica = doencas[0].caracteristicas;
         causas = doencas[0].causas;
         tratamento = doencas[0].tratamento;
+        referencia = doencas[0].referencia;
         break;
       default:
         resusltado = 'Os sintomas informados são recorentes em pelo menos ' +
@@ -47,6 +50,7 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
         caracteristica = '';
         causas = '';
         tratamento = '';
+        referencia = '';
     }
     super.didChangeDependencies();
   }
@@ -126,6 +130,21 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
                       ),
                       SizedBox(height: 10),
                       Text(tratamento),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Referencia:',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(referencia),
                     ],
                   ),
                 ],
