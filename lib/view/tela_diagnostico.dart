@@ -27,10 +27,7 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
         tratamento = '';
         break;
       case 1:
-        resusltado = 'Diagnostico: ' +
-            doencas[0].nome +
-            '\nSintomas: ' +
-            doencas[0].sintomas;
+        resusltado = doencas[0].nome + '\n\nSintomas: ' + doencas[0].sintomas;
         caracteristica = doencas[0].caracteristicas;
         causas = doencas[0].causas;
         tratamento = doencas[0].tratamento;
