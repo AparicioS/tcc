@@ -36,17 +36,13 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
         referencia = doencas[0].referencia;
         break;
       default:
-        resusltado = 'Os sintomas informados são recorentes em pelo menos ' +
-            doencas.length.toString() +
-            ' doenças:';
-        for (var i = 0; i < doencas.length; i++) {
-          resusltado += '\n*' + doencas[i].nome;
-          if (i > 5) {
-            resusltado += '\netc...';
-            break;
-          }
+        resusltado =
+            'Para um resultado mais preciso informe mais sintomas.\nOs sintomas informados são recorentes em pelo menos ' +
+                doencas.length.toString() +
+                ' doenças:';
+        for (var item in doencas) {
+          resusltado += '\n ' + item.nome;
         }
-        resusltado += '\nPara um resultado mais preciso informe mais sintomas';
         caracteristica = '';
         causas = '';
         tratamento = '';
@@ -99,7 +95,9 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(caracteristica),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(caracteristica)),
                     ],
                   ),
                   SizedBox(height: 30),
@@ -114,7 +112,7 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(causas),
+                      Align(alignment: Alignment.topLeft, child: Text(causas)),
                     ],
                   ),
                   SizedBox(height: 30),
@@ -129,7 +127,9 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(tratamento),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(tratamento)),
                     ],
                   ),
                   SizedBox(height: 30),
@@ -144,7 +144,9 @@ class _TelaDiagnosticoState extends State<TelaDiagnostico> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(referencia),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(referencia)),
                     ],
                   ),
                 ],

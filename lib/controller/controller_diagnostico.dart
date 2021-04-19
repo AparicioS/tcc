@@ -49,6 +49,10 @@ class ControllerDiagnostico {
     return doencasFromSintoma;
   }
 
+  bool isListSintomas() {
+    return sintomas.isNotEmpty;
+  }
+
 /* remover para a classe ControllerDoenca*/
   static List<String> listarSintomas(doencas) {
     Set<String> sintomas = new Set();

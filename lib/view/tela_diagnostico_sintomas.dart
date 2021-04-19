@@ -1,6 +1,7 @@
 import 'package:diagnostico_bovino/controller/controller_diagnostico.dart';
 import 'package:diagnostico_bovino/view/tela_diagnostico.dart';
 import 'package:diagnostico_bovino/view/layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TelaDiagnosticoSintomas extends StatefulWidget {
@@ -74,10 +75,27 @@ class _TelaDiagnosticoSintomasState extends State<TelaDiagnosticoSintomas> {
       ),
       floatingActionButton: BotaoRodape(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => TelaDiagnostico(),
-                settings: RouteSettings(
-                    arguments: ctrlDiagnostico.getDoencafromSintomas())));
+            if (ctrlDiagnostico.isListSintomas()) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => TelaDiagnostico(),
+                  settings: RouteSettings(
+                      arguments: ctrlDiagnostico.getDoencafromSintomas())));
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (contx) {
+                    return CupertinoAlertDialog(
+                      title: Text('Diagnostico'),
+                      content: Text(
+                          'para emissão de diagnostico é necessario informar algum sintoma'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(contx),
+                            child: Text('OK'))
+                      ],
+                    );
+                  });
+            }
           },
           child: Text("Proximo")),
     );
