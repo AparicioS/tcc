@@ -135,7 +135,7 @@ class _TelaCadastroAnimalState extends State<TelaCadastroAnimal> {
                             form.currentState.reset();
                             Navigator.pop(ctx);
                           },
-                          child: Text('Novo cadstro')),
+                          child: Text('Novo cadastro')),
                       TextButton(
                           onPressed: () {
                             Navigator.pop(context);
